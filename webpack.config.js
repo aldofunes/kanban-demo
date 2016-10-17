@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
+require('dotenv').config();
 
 const parts = require('./libs/parts');
 
@@ -28,7 +29,6 @@ const common = merge(
     output: {
       path: PATHS.build,
       filename: '[name].js'
-      // TODO: Set publicPath to match your GitHub project name
       // E.g., '/kanban-demo/'. Webpack will alter asset paths
       // based on this. You can even use an absolute path here
       // or even point to a CDN.
@@ -62,7 +62,14 @@ switch(TARGET) {
         output: {
           path: PATHS.build,
           filename: '[name].[chunkhash].js',
-          chunkFilename: '[chunkhash].js'
+          chunkFilename: '[chunkhash].js',
+          publicPath: 'kanban-demo'
+        },
+        resolve: {
+          alias: {
+            'react': 'react-lite',
+            'react-dom': 'react-lite'
+          }
         }
       },
       parts.clean(PATHS.build),

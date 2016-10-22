@@ -63,7 +63,7 @@ switch(TARGET) {
           path: PATHS.build,
           filename: '[name].[chunkhash].js',
           chunkFilename: '[chunkhash].js',
-          publicPath: 'kanban-demo'
+          publicPath: '/kanban-demo/'
         },
         resolve: {
           alias: {

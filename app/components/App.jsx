@@ -21,12 +21,41 @@ class App extends React.Component {
   }
 
   addNote = () => {
-    const {notes} = this.state;
+    const { notes } = this.state;
     this.setState({
-      notes: notes.concat([{
-        id: uuid.v4(),
-        task: 'New Task'
-      }])
+      notes: notes.concat([
+        {
+          id: uuid.v4(),
+          task: 'New Task'
+        }
+      ])
+    })
+  };
+
+  activateNoteEdit = (id) => {
+    const { notes } = this.state;
+    this.setState({
+      notes: notes.map(note => {
+        if (note.id === id) {
+          note.editing = true;
+        }
+
+        return note;
+      })
+    })
+  };
+
+  editNote = (id, task) => {
+    const { notes } = this.state;
+    this.setState({
+      notes: notes.map(note => {
+        if (note.id === id) {
+          note.editing = false;
+          note.task = task;
+        }
+
+        return note;
+      })
     })
   };
 
@@ -34,7 +63,7 @@ class App extends React.Component {
     // Avoid bubbling to edit
     event.stopPropagation();
 
-    const {notes} = this.state;
+    const { notes } = this.state;
 
     this.setState({
       notes: notes.filter(note => note.id !== id)
@@ -47,10 +76,16 @@ class App extends React.Component {
     return (
       <div>
         <button
+          className="add-note"
           onClick={this.addNote}
         >+
         </button>
-        <Notes notes={notes} onDelete={this.deleteNote} />
+        <Notes
+          notes={notes}
+          onNoteClick={this.activateNoteEdit}
+          onEdit={this.editNote}
+          onDelete={this.deleteNote}
+        />
       </div>
     );
   }

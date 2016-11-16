@@ -1,6 +1,6 @@
 import React from 'react';
 import {compose} from 'redux';
-import {DropTarget} from 'react-dnd';
+import {DragSource, DropTarget} from 'react-dnd';
 import ItemTypes from '../constants/itemTypes';
 import connect from '../libs/connect';
 import NoteActions from '../actions/NoteActions';
@@ -8,7 +8,19 @@ import LaneActions from '../actions/LaneActions';
 import Notes from './Notes';
 import LaneHeader from './LaneHeader';
 
-const Lane = ({ connectDropTarget, lane, notes, LaneActions, NoteActions, ...props }) => {
+const Lane = ({
+  connectLaneDragSource,
+  isDragging,
+  connectLaneDropTarget,
+  isOver,
+  onMove,
+  connectDropTarget,
+  lane,
+  notes,
+  LaneActions,
+  NoteActions,
+  ...props
+}) => {
   const activateNoteEdit = (noteId) => {
     NoteActions.update({ id: noteId, editing: true });
   };
@@ -35,7 +47,7 @@ const Lane = ({ connectDropTarget, lane, notes, LaneActions, NoteActions, ...pro
     ), [])
   };
 
-  return connectDropTarget(
+  return compose(connectLaneDragSource, connectLaneDropTarget, connectDropTarget)(
     <div {...props}>
       <LaneHeader lane={lane} />
       <Notes
@@ -46,6 +58,22 @@ const Lane = ({ connectDropTarget, lane, notes, LaneActions, NoteActions, ...pro
       />
     </div>
   );
+};
+
+Lane.propTypes = {
+  lane: React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    editing: React.PropTypes.bool,
+    name: React.PropTypes.string,
+    notes: React.PropTypes.array
+  }).isRequired,
+  LaneActions: React.PropTypes.object,
+  NoteActions: React.PropTypes.object,
+  connectDropTarget: React.PropTypes.func
+};
+Lane.defaultProps = {
+  name: '',
+  notes: []
 };
 
 const noteTarget = {
@@ -62,9 +90,37 @@ const noteTarget = {
   }
 };
 
+const laneSource = {
+  beginDrag(props) {
+    return {
+      id: props.lane.id
+    };
+  }
+};
+
+const laneTarget = {
+  hover(targetProps, monitor) {
+    const targetId = targetProps.lane.id;
+    const sourceProps = monitor.getItem();
+    const sourceId = sourceProps.id;
+
+    if (sourceId !== targetId) {
+      targetProps.onMove({ sourceId, targetId });
+    }
+  }
+};
+
 export default compose(
   DropTarget(ItemTypes.NOTE, noteTarget, connect => ({
     connectDropTarget: connect.dropTarget()
+  })),
+  DragSource(ItemTypes.LANE, laneSource, (connect, monitor) => ({
+    connectLaneDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging
+  })),
+  DropTarget(ItemTypes.LANE, laneTarget, (connect, monitor) => ({
+    connectLaneDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
   })),
   connect(({ notes }) => ({
     notes

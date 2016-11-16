@@ -8,6 +8,18 @@ const Editable = ({ editing, value, onEdit, className, ...props }) => {
   return <span className={classnames('value', className)} {...props}>{value}</span>;
 };
 
+Editable.propTypes = {
+  value: React.PropTypes.string,
+  editing: React.PropTypes.bool,
+  onEdit: React.PropTypes.func.isRequired
+};
+
+Editable.defaultProps = {
+  value: '',
+  editing: false,
+  onEdit: () => {}
+};
+
 class Edit extends React.Component {
   checkEnter = (event) => {
     if (event.key === 'Enter') {
@@ -25,7 +37,7 @@ class Edit extends React.Component {
   };
 
   render() {
-    const { className, value, ...props } = this.props;
+    const { className, value, onEdit, ...props } = this.props;
 
     return <input
       type="text"

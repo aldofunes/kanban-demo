@@ -3,7 +3,7 @@ import Note from './Note';
 import Editable from './Editable';
 import LaneActions from '../actions/LaneActions';
 
-const Notes = ({ notes, onNoteClick = () => {}, onEdit = () => {}, onDelete = () => {} }) => (
+const Notes = ({ notes, onNoteClick, onEdit, onDelete }) => (
   <ul className="notes">
     {notes.map(({ id, editing, task }) => (
       <li key={id}>
@@ -12,7 +12,7 @@ const Notes = ({ notes, onNoteClick = () => {}, onEdit = () => {}, onDelete = ()
           id={id}
           editing={editing}
           onClick={onNoteClick.bind(null, id)}
-          onMove={LaneActions.move}
+          onMove={LaneActions.moveNote}
         >
           <Editable
             className="editable"
@@ -20,7 +20,7 @@ const Notes = ({ notes, onNoteClick = () => {}, onEdit = () => {}, onDelete = ()
             value={task}
             onEdit={onEdit.bind(null, id)}
           />
-          <button className="delete" onClick={onDelete.bind(null, id)} >X</button>
+          <button className="delete" onClick={onDelete.bind(null, id)}>X</button>
         </Note>
       </li>
     ))}
@@ -28,8 +28,17 @@ const Notes = ({ notes, onNoteClick = () => {}, onEdit = () => {}, onDelete = ()
 );
 
 Notes.propTypes = {
-  notes: React.PropTypes.array.isRequired,
-  onDelete: React.PropTypes.func.isRequired
+  notes: React.PropTypes.array,
+  onEdit: React.PropTypes.func,
+  onDelete: React.PropTypes.func,
+  onNoteClick: React.PropTypes.func
+};
+
+Notes.defaultProps = {
+  notes: [],
+  onEdit: () => {},
+  onDelete: () => {},
+  onNoteClick: () => {}
 };
 
 export default Notes;

@@ -63,7 +63,7 @@ class LaneStore {
     });
   }
 
-  move({sourceId, targetId}) {
+  moveNote({sourceId, targetId}) {
     const lanes = this.lanes;
     const sourceLane = lanes.filter(lane => lane.notes.includes(sourceId))[0];
     const targetLane = lanes.filter(lane => lane.notes.includes(targetId))[0];
@@ -86,6 +86,24 @@ class LaneStore {
       // and move it to target
       targetLane.notes.splice(targetNoteIndex, 0, sourceId);
     }
+    this.setState({lanes});
+  }
+
+  moveLane({sourceId, targetId}) {
+    let lanes = this.lanes;
+    const sourceLane = lanes.filter(lane => lane.id === sourceId)[0];
+    const sourceLaneIndex = lanes.map(lane => lane.id).indexOf(sourceId);
+    const targetLaneIndex = lanes.map(lane => lane.id).indexOf(targetId);
+
+    if (sourceId !== targetId) {
+      lanes = update(lanes, {
+        $splice: [
+          [sourceLaneIndex, 1],
+          [targetLaneIndex, 0, sourceLane]
+        ]
+      })
+    }
+
     this.setState({lanes});
   }
 }

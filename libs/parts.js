@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
-exports.indexTemplate = function(options) {
+exports.indexTemplate = function (options) {
   return {
     plugins: [
       new HtmlWebpackPlugin({
@@ -17,7 +17,7 @@ exports.indexTemplate = function(options) {
   };
 }
 
-exports.loadJSX = function(include) {
+exports.loadJSX = function (include) {
   return {
     module: {
       loaders: [
@@ -30,9 +30,9 @@ exports.loadJSX = function(include) {
       ]
     }
   };
-}
+};
 
-exports.loadIsparta = function(include) {
+exports.loadIsparta = function (include) {
   return {
     module: {
       preLoaders: [
@@ -46,7 +46,7 @@ exports.loadIsparta = function(include) {
   };
 }
 
-exports.lintJSX = function(include) {
+exports.lintJSX = function (include) {
   return {
     module: {
       preLoaders: [
@@ -60,7 +60,7 @@ exports.lintJSX = function(include) {
   };
 }
 
-exports.enableReactPerformanceTools = function() {
+exports.enableReactPerformanceTools = function () {
   return {
     module: {
       loaders: [
@@ -73,7 +73,7 @@ exports.enableReactPerformanceTools = function() {
   };
 }
 
-exports.devServer = function(options) {
+exports.devServer = function (options) {
   const ret = {
     devServer: {
       // Enable history API fallback so HTML5 History API based
@@ -108,7 +108,7 @@ exports.devServer = function(options) {
     ]
   };
 
-  if(options.poll) {
+  if (options.poll) {
     ret.watchOptions = {
       // Delay the rebuild after the first change
       aggregateTimeout: 300,
@@ -120,7 +120,7 @@ exports.devServer = function(options) {
   return ret;
 }
 
-exports.setupCSS = function(paths) {
+exports.setupCSS = function (paths) {
   return {
     module: {
       loaders: [
@@ -134,7 +134,7 @@ exports.setupCSS = function(paths) {
   };
 }
 
-exports.minify = function() {
+exports.minify = function () {
   return {
     plugins: [
       new webpack.optimize.UglifyJsPlugin({
@@ -146,7 +146,7 @@ exports.minify = function() {
   };
 }
 
-exports.setFreeVariable = function(key, value) {
+exports.setFreeVariable = function (key, value) {
   const env = {};
   env[key] = JSON.stringify(value);
 
@@ -157,7 +157,7 @@ exports.setFreeVariable = function(key, value) {
   };
 }
 
-exports.extractBundle = function(options) {
+exports.extractBundle = function (options) {
   const entry = {};
   entry[options.name] = options.entries;
 
@@ -177,7 +177,7 @@ exports.extractBundle = function(options) {
   };
 }
 
-exports.clean = function(path) {
+exports.clean = function (path) {
   return {
     plugins: [
       new CleanWebpackPlugin([path], {
@@ -187,7 +187,7 @@ exports.clean = function(path) {
   };
 }
 
-exports.extractCSS = function(paths) {
+exports.extractCSS = function (paths) {
   return {
     module: {
       loaders: [
@@ -206,7 +206,7 @@ exports.extractCSS = function(paths) {
   };
 }
 
-exports.npmInstall = function(options) {
+exports.npmInstall = function (options) {
   options = options || {};
 
   return {

@@ -16,6 +16,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "assert": "^1.4.1",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
@@ -48,6 +49,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "react-addons-perf": "^15.1.0",
     "react-addons-test-utils": "^15.1.0",
+    "react-dnd-test-backend": "^1.0.2",
     "react-lite": "^0.15.24",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
